@@ -1,0 +1,25 @@
+{
+  "name": "katover4low",
+  "version": "1.0.0",
+  "description": "a site that is nothing like stackoverflow. Not even a little bit.",
+  "main": "app.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kat4/KatOver4low.git"
+  },
+  "keywords": [
+    "katoverflow"
+  ],
+  "author": "kat4",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kat4/KatOver4low/issues"
+  },
+  "homepage": "https://github.com/kat4/KatOver4low#readme"
+}
