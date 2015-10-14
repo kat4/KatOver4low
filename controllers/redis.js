@@ -10,7 +10,7 @@ var redisKato = {
             client.zadd("qScoreboard", 0, thisId);
             // adds question id to question list
             client.lpush(["question", thisId], function(err, reply) {
-                console.log('reply from questions list', reply);
+
             });
             //
             client.hmset(thisId, question, function() {
@@ -48,7 +48,7 @@ var redisKato = {
             client.zadd("quesCommentLink", comment.qId, thisId);
 
             client.lpush(["comment", thisId], function(err, reply) {
-                console.log('reply from comments list', reply);
+
             });
             client.hmset(thisId, comment, function() {
                 callback();
@@ -58,11 +58,25 @@ var redisKato = {
 
     getQuestionComments: function(qid, callback) {
         client.zrangebyscore("quesCommentLink", qid, qid, function(err, reply) {
-            callback(reply);
+
+            redisKato.idsToObjects(reply, callback);
         });
-    }
+    },
 
+    idsToObjects: function(ids, callback) {
+      var objects = [];
+      ids.forEach(function(id){
 
+        client.hgetall(id, function(err, reply) {
+              objects.push(reply);
+              if (objects.length === ids.length) {
+                  callback(objects);
+            }
+
+        });
+
+    });
+  }
 };
 
 var sampleQuestion = {
@@ -73,19 +87,29 @@ var sampleQuestion = {
 };
 
 var sampleComment = {
-    qId: 3,
+    qId: 2,
     username: 'josh',
     content: 'Comment for question 3 kato content. Loads of kato content.',
     date: '2015-10-10'
 };
 
 
-redisKato.getQuestionComments(3, function(data) {
+redisKato.getQuestionComments(2, function(data) {
     console.log(data);
 });
 
-// redisKato.addComment(sampleComment, function() {
-//     console.log('added the post');
-// });
+redisKato.addComment(sampleComment, function() {
+    console.log('added the helloooo');
+});
+
+
+redisKato.addQuestion(sampleQuestion, function() {
+    console.log('1added the helloooo');
+});
+
+
+redisKato.addComment(sampleComment, function() {
+    console.log('added the helloooo');
+});
 
 module.exports = redisKato;
