@@ -16,7 +16,19 @@ function manageConnection(socket){
     console.log('log user disconnected');
   });
   socket.on('send new question', function(title){
-    redisFunctions.redisKato.addQuestion(title, );
-    io.emit('recieve updated questions', title);
+    var keyPair = {'title': title};
+    redisFunctions.addQuestion(keyPair);
+    //FCScripters are doing these two
+    //one after the other and they come out in order
+    //see if you can work out why the callbacks are
+    //working at first (see the console.log outputs)
+    //but then suddenly they become undefined after the multi
+    // #callbackhell
+    redisFunctions.getLatestQuestions(myEmit);
+    console.log('socketon',myEmit);
   });
+
+  function myEmit(data){
+    io.emit('recieve updated questions', data);
+  }
 }
