@@ -5,13 +5,14 @@ var redisKato = {
     addQuestion: function(question, callback) {
         client.incr('idCounter', function(err, reply) {
             var thisId = reply;
-            question.id = thisId;
-
-              client.zadd("qScoreboard", 0, thisId);
-
+            question.qId = thisId;
+            // adds question to the scoreboard, with initial score 0
+            client.zadd("qScoreboard", 0, thisId);
+            // adds question id to question list
             client.lpush(["question", thisId], function(err, reply) {
-                console.log('reply from questions list', reply);
+
             });
+            //
             client.hmset(thisId, question, function() {
                 callback();
             });
@@ -40,25 +41,45 @@ var redisKato = {
     },
 
     addComment: function(comment, callback) {
-            client.incr('idCounter', function(err, reply) {
-                var thisId = reply;
-                comment.id = thisId;
+        client.incr('idCounter', function(err, reply) {
+            var thisId = reply;
+            comment.cId = thisId;
 
-                  client.zadd("quesCommentLink", 0, thisId);
+            client.zadd("quesCommentLink", comment.qId, thisId);
 
-                client.lpush(["comment", thisId], function(err, reply) {
-                    console.log('reply from comments list', reply);
-                });
-                client.hmset(thisId, comment, function() {
-                    callback();
-                });
+            client.lpush(["comment", thisId], function(err, reply) {
+
             });
-        },
+            client.hmset(thisId, comment, function() {
+                callback();
+            });
+        });
+    },
 
+    getQuestionComments: function(qid, callback) {
+        client.zrangebyscore("quesCommentLink", qid, qid, function(err, reply) {
 
+            redisKato.idsToObjects(reply, callback);
+        });
+    },
+
+    idsToObjects: function(ids, callback) {
+      var objects = [];
+      ids.forEach(function(id){
+
+        client.hgetall(id, function(err, reply) {
+              objects.push(reply);
+              if (objects.length === ids.length) {
+                  callback(objects);
+            }
+
+        });
+
+    });
+  }
 };
 
-var samplePost = {
+var sampleQuestion = {
     username: 'kat',
     title: 'First kato',
     content: 'Loads of kato content. Loads of kato content. Loads of kato content. Loads of kato content. Loads of kato content. Loads of kato content.',
@@ -68,11 +89,27 @@ var samplePost = {
 var sampleComment = {
     qId: 2,
     username: 'josh',
-    content: 'Loads of comment content. Loads of kato content. Loads of kato content. Loads of kato content. Loads of kato content. Loads of kato content.',
+    content: 'Comment for question 3 kato content. Loads of kato content.',
     date: '2015-10-10'
 };
 
 
-redisKato.addPost(samplePost, 'question', function(){console.log('added the post');});
+redisKato.getQuestionComments(2, function(data) {
+    console.log(data);
+});
+
+redisKato.addComment(sampleComment, function() {
+    console.log('added the helloooo');
+});
+
+
+redisKato.addQuestion(sampleQuestion, function() {
+    console.log('1added the helloooo');
+});
+
+
+redisKato.addComment(sampleComment, function() {
+    console.log('added the helloooo');
+});
 
 module.exports = redisKato;
