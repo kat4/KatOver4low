@@ -30,5 +30,6 @@ function manageConnection(socket){
 
   function myEmit(data){
     io.emit('recieve updated questions', data);
+    console.log('MYEMIT-dataaaa', data);
   }
 }

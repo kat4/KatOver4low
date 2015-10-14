@@ -12,8 +12,9 @@ var redisKato = {
 
             });
             //
+
             client.hmset(thisId, question, function() {
-                redisKato.getLatestQuestions();
+                // redisKato.getLatestQuestions(callback);
             });
         });
     },
@@ -26,7 +27,6 @@ var redisKato = {
     getLatestQuestions: function(callback) {
         console.log('LOG2222', callback);
         client.lrange("question", 0, 10, function(err, reply){
-            var multi = client.multi();
             var questionsToGetArr = [];
             questionsToGetArr = reply;
             console.log('log Qs2Get', questionsToGetArr);
@@ -78,15 +78,15 @@ var redisKato = {
     idsToObjects: function(ids, callback) {
       var objects = [];
       var multi = client.multi();
-      console.log('LOG4444', callback);
         ids.forEach(function(id){
-
+            console.log('LOG4444', callback);
         multi.hgetall(id);
         });
         multi.exec(function(err, replies) {
          console.log('LOG5555', callback);
          console.log('multi output =    ', replies);
-         callback(replies);
+        //  callback(replies);
+            console.log(replies);
         });
     }
 };

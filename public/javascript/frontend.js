@@ -10,6 +10,7 @@ document.getElementsByTagName('form')[0].addEventListener('submit',function(even
   titleInput.value = '';
 });
 socket.on('recieve updated questions', function(recievedTitle){
+  console.log('RECIIIEVE', recievedTitle);
   titlesContainer.innerHTML += ("<li>" + recievedTitle + "</li>");
 });
 // }());
