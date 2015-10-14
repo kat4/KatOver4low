@@ -5,7 +5,6 @@ var redisKato = {
     addQuestion: function(question, callback) {
         client.incr('idCounter', function(err, reply) {
             var thisId = reply;
-            question.qId = thisId;
             // adds question to the scoreboard, with initial score 0
             client.zadd("qScoreboard", 0, thisId);
             // adds question id to question list
@@ -24,8 +23,15 @@ var redisKato = {
 
     },
 
-    getLatestQuestions: function() {
-
+    getLatestQuestions: function(callback) {
+      client.lrange("question", 0, -1, function(err, reply, callback){
+        var multi = client.multi();
+        var questionsToGet = [];
+        if (err) {console.log(err);}
+        else {
+          callback();
+        }
+      });
     },
 
     getBestQuestions: function() {
