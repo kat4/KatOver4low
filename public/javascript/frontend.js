@@ -1,29 +1,20 @@
-var frontend = (function (){
-
-  var ajax = function(method, url, callback) {
-    var openRequest = new XMLHttpRequest();
-    openRequest.onreadystatechange = function() {
-      if (openRequest.readyState == 4 && openRequest.status == 200) {
-        callback(openRequest.responseText);
-      }
-    };
-    openRequest.open(method, url, true);
-    openRequest.send();
-  };
-
-  function getreq(callback) {
-    ajax('GET', '/', callback);
-  }
-
-  // function getMeows(callback) {
-  //   ajax('GET', '/meows', callback);
-  // }
-
-
-  // return {
-  //   getMeows: getMeows,
-  // };
-
-  getreq(console.log('heloo'));
-  console.log("loaded mews module");
-}());
+// var frontend = (function (){
+var socket = io();
+var titlesContainer = document.getElementById('titles-container');
+document.getElementsByTagName('form')[0].addEventListener('submit',function(event){
+  var titleInput = document.getElementById('question-title');
+  var contentInput = document.getElementById('question-content');
+  // var titlesContainer = document.getElementById('titles-container');
+  event.preventDefault();
+  console.log('log TCONT', titlesContainer);
+  console.log('log TI', titleInput.value);
+  socket.emit('send new question', titleInput.value);
+  titleInput.value = '';
+});
+socket.on('recieve updated questions', function(recievedTitle){
+  console.log('log titlesC', titlesContainer);
+  var myText = recievedTitle;
+  console.log('log myTXT', myText);
+  titlesContainer.innerHTML += ("<li>" +myText+ "</li>");
+});
+// }());
