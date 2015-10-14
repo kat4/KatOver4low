@@ -7,34 +7,48 @@ var handlerFunctions = require('./handlerfunctions');
 var server = (function() {
 
   function handler(req, res) {
-    console.log(req);
+    // console.log(req);
     var url = req.url;
     var urlArray = url.split('/');
     if (req.method === 'GET') {
         if (url === '/') {
+          console.log('log if url /');
             res.writeHead(200, {
                 'Content-Type': 'text/html'
             });
             res.end(index);
         }
-        // else if (urlArray[1] === 'meows') {
-        //     client.lrange('__test', 0, -1, function(err, reply) {
-        //         if (err) {console.log(err);}
-        //         else {
-        //           res.write(JSON.stringify(reply));
-        //           res.end();
-        //         }
-        //       });
-        //}
+        // else if (url === '/frontend.js'){
+        //   console.log('log if frontend');
+        //   res.writeHead(200, {
+        //       'Content-Type': 'text/js'
+        //   });
+        //   res.end();
+        // }
         else {
-            handlerFunctions.generalHandler(req, res);
+          fs.readFile( './public' + req.url, function(err, file) {
+              if (err) {
+                  res.writeHead(404);
+                  console.log(req.url);
+                  console.log(err);
+                  res.end('arm broken');
+              } else {
+                  var ext = req.url.split('.')[1];
+                  res.writeHead(200, {
+                      'Content-Type': 'text/' + ext
+                  });
+                  res.end(file);
+              }
+          });
         }
     }
-  }  
+  }
   return {
     handler: handler
   };
 
 }());
+
+
 
 module.exports = server;
