@@ -1,6 +1,22 @@
 //start server
 var http = require('http');
 var port = process.env.PORT || 8000;
-var Server = require('./controllers/handler.js');
+var Endpoints = require('./controllers/handler.js');
+var Server = http.createServer(Endpoints.handler);
+var io = require('socket.io')(Server);
 console.log('server is running on PORT:8000');
-http.createServer(Server.handler).listen(port);
+Server.listen(port);
+
+io.on('connection', manageConnection);
+
+function manageConnection(socket){
+  console.log('log user connected');
+  socket.on('disconnect', function(){
+    console.log('log user disconnected');
+  });
+  socket.on('send new question', function(title){
+    console.log('log title', title);
+    io.emit('recieve updated questions', title);
+    console.log('another desperate log!');
+  });
+}
