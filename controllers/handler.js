@@ -69,11 +69,7 @@ var server = (function() {
 }());
 
 function getToken(code, callback) {
-    var postData = {
-        client_id: process.env.CLIENT_ID,
-        client_secret:process.env.CLIENT_SECRET,
-        code: code
-    };
+    var postData ='code='+ code + '&client_id='+process.env.CLIENT_ID+'&client_secret='+process.env.CLIENT_SECRET;
     var postOptions = {
         hostname: 'github.com',
         port: '80',
