@@ -32,7 +32,7 @@ var server = (function() {
                 var userAuthCode = urlArray[2].slice(6);
                 console.log(userAuthCode);
                 getToken(userAuthCode,function(data){
-                    console.log(data);
+                    res.end(data);
                 });
 
 
@@ -69,11 +69,15 @@ var server = (function() {
 }());
 
 function getToken(code, callback) {
+    var postData = {
+        client_id: process.env.CLIENT_ID,
+        client_secret:process.env.CLIENT_SECRET,
+        code: code
+    };
     var postOptions = {
-        hostname: 'https://github.com',
+        hostname: 'github.com',
         port: '80',
-        path: '/login/oauth/access_token?client_id' + process.env.CLIENT_ID +
-            '&client_secret=' + process.env.CLIENT_SECRET + '&code=' + code,
+        path: '/login/oauth/access_token',
         method: 'POST',
 
     };
@@ -87,6 +91,8 @@ function getToken(code, callback) {
             callback(body);
         });
     });
+    req.write(postData);
+    req.end();
 }
 
 module.exports = server;
