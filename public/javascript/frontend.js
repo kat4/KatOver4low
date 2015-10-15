@@ -13,11 +13,13 @@ document.getElementsByTagName('form')[0].addEventListener('submit',function(even
 });
 
 socket.on('recieve updated questions', function(recievedQuestions){
-  var thisQuestion = JSON.parse(recievedQuestions);
-  console.log(thisQuestion[0]);
-
-  titlesContainer.innerHTML += ("<li>" + recievedQuestions + "</li>");
+  var theseQuestions = JSON.parse(recievedQuestions);
+  theseQuestions.map(createQuestionHTML);
 });
+
+function createQuestionHTML(object) {
+  titlesContainer.innerHTML += "<div class = \"questionFP\"><span>" + object.date + "Im a question id" + object.myId + "</span><p>" + object.title + "</p></div>";
+}
 
 function collectQuestionInfo() {
     var thisQuesTitle = quesTitleInput.value;
