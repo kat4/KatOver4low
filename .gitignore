@@ -27,3 +27,8 @@ build/Release
 node_modules
 
 dump.rdb
+
+
+# ENV
+
+config.env
