@@ -1,4 +1,5 @@
 [![Code Climate](https://codeclimate.com/github/kat4/KatOver4low/badges/gpa.svg)](https://codeclimate.com/github/kat4/KatOver4low)
+[![Test Coverage](https://codeclimate.com/github/kat4/KatOver4low/badges/coverage.svg)](https://codeclimate.com/github/kat4/KatOver4low/coverage)
 
 # KatOver4low
 A question and answer website that has no likeness whatsoever to StackOverflow
