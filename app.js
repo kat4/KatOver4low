@@ -17,7 +17,7 @@ function manageConnection(socket){
   });
   socket.on('send new question', function(title){
     var keyPair = {'title': title};
-    redisFunctions.addQuestion(keyPair, redisFunctions.getLatestQuestions.myEmit);
+    redisFunctions.addQuestion(keyPair, myEmit);
     //FCScripters are doing these two
     //one after the other and they come out in order
     //see if you can work out why the callbacks are
@@ -26,12 +26,13 @@ function manageConnection(socket){
     // #callbackhell
     // redisFunctions.getLatestQuestions(myEmit);
     // console.log('socketon',myEmit);
+
+    function myEmit(data){
+      var stringData = JSON.stringify(data);
+      io.emit('recieve updated questions', stringData);
+      console.log('MYEMIT-dataaaa', data);
+    }
   });
 
-  function myEmit(data){
-    var stringData = JSON.stringify(data);
-    io.emit('recieve updated questions', stringData);
-    console.log('MYEMIT-dataaaa', data);
-  }
+
 }
-module.exports = io;

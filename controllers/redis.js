@@ -1,9 +1,9 @@
 var client = require('redis').createClient(process.env.REDIS_URL);
-// var app = require('./app.js');
+
 var redisKato = {
 
-    addQuestion: function(question, callback) {
-        console.log('NEWSESHCALL', callback);
+    addQuestion: function(question, myEmit) {
+        //console.log('NEWSESHCALL', callback);
         client.incr('idCounter', function(err, reply) {
             var thisId = reply;
             // adds question to the scoreboard, with initial score 0
@@ -15,7 +15,7 @@ var redisKato = {
             //
 
             client.hmset(thisId, question, function() {
-                callback();
+                redisKato.getLatestQuestions(myEmit);
             });
         });
     },
@@ -31,7 +31,7 @@ var redisKato = {
     // console.log('MYEMIT-dataaaa', data);
     // },
 
-    getLatestQuestions: function(callback) {
+    getLatestQuestions: function(myEmitcallback) {
         // console.log('LOG2222', callback);
         client.lrange("question", 0, 10, function(err, reply){
             var questionsToGetArr = [];
@@ -42,7 +42,7 @@ var redisKato = {
             }
             else{
             //  console.log('LOG3333', callback);
-              redisKato.idsToObjects(questionsToGetArr, callback);
+              redisKato.idsToObjects(questionsToGetArr, myEmitcallback);
             }
       });
     },
@@ -82,7 +82,7 @@ var redisKato = {
         });
     },
 
-    idsToObjects: function(ids, callback) {
+    idsToObjects: function(ids, myEmitcallback) {
       var objects = [];
       var multi = client.multi();
         ids.forEach(function(id){
@@ -92,7 +92,8 @@ var redisKato = {
         multi.exec(function(err, replies) {
         //  console.log('LOG5555', callback);
         //  console.log('multi output =    ', replies);
-        //  redisKato.myEmit(replies);
+        myEmitcallback(replies);
+
 
         });
     }
