@@ -1,8 +1,9 @@
 var client = require('redis').createClient(process.env.REDIS_URL);
-
+// var app = require('./app.js');
 var redisKato = {
 
     addQuestion: function(question, callback) {
+        console.log('NEWSESHCALL', callback);
         client.incr('idCounter', function(err, reply) {
             var thisId = reply;
             // adds question to the scoreboard, with initial score 0
@@ -14,7 +15,7 @@ var redisKato = {
             //
 
             client.hmset(thisId, question, function() {
-                // redisKato.getLatestQuestions(callback);
+                callback();
             });
         });
     },
@@ -24,8 +25,14 @@ var redisKato = {
 
     },
 
+    // myEmit: function(data){
+    // var stringData = JSON.stringify(data);
+    // app.io.emit('recieve updated questions', stringData);
+    // console.log('MYEMIT-dataaaa', data);
+    // },
+
     getLatestQuestions: function(callback) {
-        console.log('LOG2222', callback);
+        // console.log('LOG2222', callback);
         client.lrange("question", 0, 10, function(err, reply){
             var questionsToGetArr = [];
             questionsToGetArr = reply;
@@ -34,7 +41,7 @@ var redisKato = {
                 console.log(err);
             }
             else{
-             console.log('LOG3333', callback);
+            //  console.log('LOG3333', callback);
               redisKato.idsToObjects(questionsToGetArr, callback);
             }
       });
@@ -79,14 +86,14 @@ var redisKato = {
       var objects = [];
       var multi = client.multi();
         ids.forEach(function(id){
-            console.log('LOG4444', callback);
+            // console.log('LOG4444', callback);
         multi.hgetall(id);
         });
         multi.exec(function(err, replies) {
-         console.log('LOG5555', callback);
-         console.log('multi output =    ', replies);
-        //  callback(replies);
-            console.log(replies);
+        //  console.log('LOG5555', callback);
+        //  console.log('multi output =    ', replies);
+        //  redisKato.myEmit(replies);
+
         });
     }
 };
