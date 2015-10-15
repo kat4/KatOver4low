@@ -2,6 +2,7 @@
 var fs = require('fs');
 var redisFunctions = require('./redis.js');
 var index = fs.readFileSync('./views/index.html');
+var questionHTML = fs.readFileSync('./views/questions.html');
 var handlerFunctions = require('./handlerfunctions');
 var env = require('env2')('./config.env');
 var Http = require('http');
@@ -9,41 +10,30 @@ var Http = require('http');
 var server = (function() {
 
     function handler(req, res) {
-        // console.log(req);
         var url = req.url;
         var urlArray = url.split('/');
-        console.log(urlArray);
         if (req.method === 'GET') {
             if (url === '/') {
-                console.log('log if url /');
-                // var authRedirect = 'https://github.com/login/oauth/authorize?client_id=' + process.env.CLIENT_ID;
-                // res.writeHead(302, {
-                //     'Content-Type': 'text/html',
-                //     'Location': authRedirect
-                // });
-                // res.end(index);
                   res.writeHead(200, {
                       'Content-Type': 'text/html'
                   });
                   res.end(index);
             }
-            if (urlArray[1] === 'auth') {
-                console.log('post to gh');
+            else if (urlArray[1] === "question"){
+                res.writeHead(200, {
+                  'Content-Type': 'text/html'
+                });
+                res.end(questionHTML);
+            }
+            else if (urlArray[1] === 'auth') {
                 var userAuthCode = urlArray[2].slice(6);
-                console.log(userAuthCode);
                 getToken(userAuthCode,function(data){
                     res.end(data);
                 });
 
 
             }
-            // else if (url === '/frontend.js'){
-            //   console.log('log if frontend');
-            //   res.writeHead(200, {
-            //       'Content-Type': 'text/js'
-            //   });
-            //   res.end();
-            // }
+
             else {
                 fs.readFile('./public' + req.url, function(err, file) {
                     if (err) {

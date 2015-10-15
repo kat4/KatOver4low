@@ -11,9 +11,7 @@ Server.listen(port);
 io.on('connection', manageConnection);
 
 function manageConnection(socket){
-  console.log('log user connected');
   socket.on('disconnect', function(){
-    console.log('log user disconnected');
   });
   socket.on('send new question', function(questionObject){
     var parsedQuestion = JSON.parse(questionObject);
@@ -23,6 +21,9 @@ function manageConnection(socket){
       var stringData = JSON.stringify(data);
       io.emit('recieve updated questions', stringData);
     }
+  });
+  socket.on('send question id', function(qIdInUrl){
+
   });
 
 
