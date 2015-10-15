@@ -12,6 +12,9 @@ var redisKato = {
             client.lpush(["question", thisId], function(err, reply) {
 
             });
+
+            question.myId = thisId;
+            console.log(question.myId);
             //
 
             client.hmset(thisId, question, function() {
