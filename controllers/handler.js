@@ -1,6 +1,6 @@
 //handler for app.js
 var fs = require('fs');
-//var redisFunctions = require('./redis.js');
+var redisFunctions = require('./redis.js');
 var index = fs.readFileSync('./views/index.html');
 var handlerFunctions = require('./handlerfunctions');
 var env = require('env2')('./config.env');
@@ -60,6 +60,7 @@ var server = (function() {
                     }
                 });
             }
+
         }
     }
     return {

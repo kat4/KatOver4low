@@ -4,6 +4,7 @@ var port = process.env.PORT || 8000;
 var Endpoints = require('./controllers/handler.js');
 var Server = http.createServer(Endpoints.handler);
 var io = require('socket.io')(Server);
+var redisFunctions = require('./controllers/redis.js');
 console.log('server is running on PORT:8000');
 Server.listen(port);
 
@@ -15,8 +16,23 @@ function manageConnection(socket){
     console.log('log user disconnected');
   });
   socket.on('send new question', function(title){
-    console.log('log title', title);
-    io.emit('recieve updated questions', title);
-    console.log('another desperate log!');
+    var keyPair = {'title': title};
+    redisFunctions.addQuestion(keyPair, myEmit);
+    //FCScripters are doing these two
+    //one after the other and they come out in order
+    //see if you can work out why the callbacks are
+    //working at first (see the console.log outputs)
+    //but then suddenly they become undefined after the multi
+    // #callbackhell
+    // redisFunctions.getLatestQuestions(myEmit);
+    // console.log('socketon',myEmit);
+
+    function myEmit(data){
+      var stringData = JSON.stringify(data);
+      io.emit('recieve updated questions', stringData);
+      console.log('MYEMIT-dataaaa', data);
+    }
   });
+
+
 }
