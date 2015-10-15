@@ -22,8 +22,13 @@ function manageConnection(socket){
       io.emit('recieve updated questions', stringData);
     }
   });
-  socket.on('send question id', function(qIdInUrl){
+    socket.on('send question id', function(qIdInUrl){
+      redisFunctions.getFullQuestion(qIdInUrl, qPageEmit);
 
+      function qPageEmit(data){
+        var stringData = JSON.stringify(data);
+        io.emit('recieve question from db', stringData);
+      }
   });
 
 

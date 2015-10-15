@@ -22,7 +22,13 @@ var redisKato = {
             });
         });
     },
-
+    getFullQuestion: function(id, callback){
+            var multi = client.multi();
+            multi.hgetall(id);
+            multi.exec(function(err, replies) {
+            callback(replies);
+            });
+        },
     editHash: function() {
         // need to check that current user authored the question/comment
 

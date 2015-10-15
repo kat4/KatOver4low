@@ -18,7 +18,7 @@ socket.on('recieve updated questions', function(recievedQuestions){
 });
 
 function createQuestionHTML(object) {
-  titlesContainer.innerHTML += "<div class = \"questionFP\"><span>" + object.date + "Im a question id" + object.myId + "</span><p>" + object.title + "</p></div>";
+  titlesContainer.innerHTML += "<a class = \"questionFP\" href='/question/'"+ object.myId + "><span>" + object.date + "Im a question id" + object.myId + "</span><p>" + object.title + "</p></a>";
 }
 
 function collectQuestionInfo() {
