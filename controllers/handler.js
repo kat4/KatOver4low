@@ -16,16 +16,16 @@ var server = (function() {
         if (req.method === 'GET') {
             if (url === '/') {
                 console.log('log if url /');
-                var authRedirect = 'https://github.com/login/oauth/authorize?client_id=' + process.env.CLIENT_ID;
-                res.writeHead(302, {
-                    'Content-Type': 'text/html',
-                    'Location': authRedirect
-                });
-                res.end(index);
-                //   res.writeHead(200, {
-                //       'Content-Type': 'text/html'
-                //   });
-                //   res.end(index);
+                // var authRedirect = 'https://github.com/login/oauth/authorize?client_id=' + process.env.CLIENT_ID;
+                // res.writeHead(302, {
+                //     'Content-Type': 'text/html',
+                //     'Location': authRedirect
+                // });
+                // res.end(index);
+                  res.writeHead(200, {
+                      'Content-Type': 'text/html'
+                  });
+                  res.end(index);
             }
             if (urlArray[1] === 'auth') {
                 console.log('post to gh');
