@@ -16,7 +16,7 @@ function manageConnection(socket){
     console.log('log user disconnected');
   });
   socket.on('send new question', function(title){
-    redisFunctions.redisKato.addQuestion(title, );
+    redisFunctions.redisKato.addQuestion(title);
     io.emit('recieve updated questions', title);
   });
 }

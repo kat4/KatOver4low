@@ -7,7 +7,9 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "test"
+    "test": "./node_modules/.bin/tape ./tests/*",
+    "coverage": "istanbul cover ./node-modules/.bin/tape ./tests/*",
+    "codeclimate": "CODECLIMATE_REPO_TOKEN=40b73bc4bca68835e5c908ec78573e29578ef0a6593117c360604becbe6df251 codeclimate-test-reporter < ./coverage/lcov.info"
   },
   "repository": {
     "type": "git",
@@ -23,7 +25,9 @@
   },
   "homepage": "https://github.com/kat4/KatOver4low#readme",
   "devDependencies": {
-    "redis": "^2.2.1"
+    "redis": "^2.2.1",
+    "shot": "^1.7.0",
+    "tape": "^4.2.1"
   },
   "dependencies": {
     "env2": "^2.0.2",
