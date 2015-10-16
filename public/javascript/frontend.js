@@ -31,7 +31,6 @@ function collectQuestionInfo() {
     var thisQuesContent = quesContentInput.value;
     var quesDate = year + "/" + month + "/" + day;
     var cookie = document.cookie;
-    console.log('COOOKK',cookie);
     var username = 'placeholder name';
 
     var questionObject = {

@@ -15,9 +15,9 @@ function manageConnection(socket){
   });
   socket.on('send new question', function(questionObject){
     var parsedQuestion = JSON.parse(questionObject);
-    redisFunctions.addQuestion(parsedQuestion, myEmit);
+    redisFunctions.addQuestion(parsedQuestion, emitQlist);
 
-    function myEmit(data){
+    function emitQlist(data){
       var stringData = JSON.stringify(data);
       io.emit('recieve updated questions', stringData);
     }
