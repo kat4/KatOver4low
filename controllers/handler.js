@@ -24,6 +24,7 @@ var server = (function() {
             }
             else if (urlArray[1] === 'auth') {
               var userAuthCode = urlArray[2].split('code=')[1];
+              console.log(userAuthCode);
               handlerFunctions.getToken(userAuthCode, function(data) {
                 //if (data.toString().split('access_token=')[1].split('&')[0]) {
                   console.log(data);
