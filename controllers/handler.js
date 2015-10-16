@@ -14,35 +14,40 @@ var server = (function() {
         var urlArray = url.split('/');
         if (req.method === 'GET') {
             if (url === '/') {
-                  handlerFunctions.checkCookie(req,res,index);
-            }
-            else if (urlArray[1] === "question"){
+                handlerFunctions.checkCookie(req, res, index);
+            } else if (urlArray[1] === "question") {
                 res.writeHead(200, {
-                  'Content-Type': 'text/html'
+                    'Content-Type': 'text/html'
                 });
                 res.end(questionHTML);
-            }
-            else if (urlArray[1] === 'auth') {
-              var userAuthCode = urlArray[2].split('code=')[1];
-              console.log(userAuthCode);
-              handlerFunctions.getToken(userAuthCode, function(data) {
-                //if (data.toString().split('access_token=')[1].split('&')[0]) {
-                  console.log(data);
-                  handlerFunctions.authWithAT(res, data, index);
-                //}
-                // else {
-                //   res.writeHead(302, {
-                //       'Content-Type': 'text/html',
-                //       'Location': '/'
-                //   });
-                //   res.end();
-                // }
-              });
+            } else if (urlArray[1] === 'auth') {
+                var userAuthCode = urlArray[2].split('code=')[1];
+                console.log(userAuthCode);
+                handlerFunctions.getToken(userAuthCode, function(data) {
+                    //if (data.toString().split('access_token=')[1].split('&')[0]) {
+                    console.log(data);
+                    console.log(data.toString().indexOf('error'));
+                    if (data.toString().indexOf('error') !== -1) {
+                          res.writeHead(302, {
+                              'Content-Type': 'text/html',
+                              'Location': '/'
+                          });
+                          res.end();
+                    } else {
+                        handlerFunctions.authWithAT(res, data, index);
+                    }
+                    //}
+                    // else {
+                    //   res.writeHead(302, {
+                    //       'Content-Type': 'text/html',
+                    //       'Location': '/'
+                    //   });
+                    //   res.end();
+                    // }
+                });
 
 
-            }
-
-            else {
+            } else {
                 fs.readFile('./public' + req.url, function(err, file) {
                     if (err) {
                         res.writeHead(404);
