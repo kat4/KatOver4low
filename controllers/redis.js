@@ -16,7 +16,10 @@ var redisKato = {
 
               });
 
+              question['title'] = question['title'].replace(/<.*>/g, '');
+              question['content'] = question['content'].replace(/<.*>/g, '');
               question.myId = thisId;
+              console.log('EDITED QUESTION IS ', question);
 
               client.hmset(thisId, question, function() {
                   redisKato.getLatestQuestions(myEmit);
