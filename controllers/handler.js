@@ -2,7 +2,7 @@
 var fs = require('fs');
 var redisFunctions = require('./redis.js');
 var index = fs.readFileSync('./views/index.html');
-// var questionHTML = fs.readFileSync('./views/questions.html');
+var questionHTML = fs.readFileSync('./views/question.html');
 var handlerFunctions = require('./handlerfunctions');
 var env = require('env2')('./config.env');
 var Http = require('http');
@@ -38,8 +38,6 @@ var server = (function() {
                 fs.readFile('./public' + req.url, function(err, file) {
                     if (err) {
                         res.writeHead(404);
-                        console.log(req.url);
-                        console.log(err);
                         res.end('arm broken');
                     } else {
                         var ext = req.url.split('.')[1];

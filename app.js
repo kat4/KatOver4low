@@ -23,9 +23,11 @@ function manageConnection(socket){
     }
   });
     socket.on('send question id', function(qIdInUrl){
+      console.log('im qid', qIdInUrl);
       redisFunctions.getFullQuestion(qIdInUrl, qPageEmit);
 
       function qPageEmit(data){
+        console.log('im the data', data);
         var stringData = JSON.stringify(data);
         io.emit('recieve question from db', stringData);
       }

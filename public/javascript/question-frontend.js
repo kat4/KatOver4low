@@ -10,11 +10,11 @@ var qIdInUrl = urlArray[2];
 socket.emit('send question id', qIdInUrl);
 
 socket.on("recieve question from db", function(recievedQuestion) {
-  var questionToDisplay = JSON.parse(recievedQuestion);
+  var questionToDisplay = JSON.parse(recievedQuestion)[0];
   createQuestionPageHTML(questionToDisplay);
 });
 
 function createQuestionPageHTML(object) {
-  questionTitle.value = object.thisQuesTitle;
-  questionContent.value = object.thisQuesContent;
+  questionTitle.innerHTML = object.title;
+  questionContent.innerHTML = object.content;
 }
