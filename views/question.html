@@ -7,14 +7,21 @@
   <link rel="stylesheet" type="text/css" href="/main.css">
 </head>
 
-<body>
-  <div id="question-container">
-    <div id="qpage-title"> Question title</div>
-    <div id="qpage-content"> Question content</div>
-  </div>
+  <body>
+      <div id= "question-container">
+        <div id="qpage-title" style= "color:#4eb1ba;" > Question title</div>
+        <div id="qpage-user"  > </div>
+        <div id="qpage-content"> Question content</div>
+      </div>
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/javascript/question-frontend.js" type="text/javascript"></script>
-</body>
+  <h3>Description</h3>
+  <textarea id="comment-content" rows="4" cols="50" maxlength="140"></textarea>
+  <button id="submit-comment">Send</button>
+<div id="comment-container">
+
+</div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/javascript/question-frontend.js" type="text/javascript"></script>
+  </body>
 
 </html>
