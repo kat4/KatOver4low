@@ -6,6 +6,11 @@ A question and answer website that has no likeness whatsoever to StackOverflow
 
 Our aim is to create a website where, once logged in with github credentials people can post their questions and people can comment on those questions.
 
+##How to use our site
+
+In the smaller box, type your question title. In the larger box type the more details content of your questions.
+Check it our here > https://katover4low.herokuapp.com/
+
 We will be using:
 * github authentication
 * socket.io - for realtime interaction
