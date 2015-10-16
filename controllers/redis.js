@@ -1,4 +1,6 @@
-var client = require('redis').createClient(process.env.REDIS_URL);
+var client = require('redis').createClient(process.env.REDIS_URL, {
+    no_ready_check: true
+  });
 
 var redisKato = {
 
