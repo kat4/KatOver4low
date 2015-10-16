@@ -13,6 +13,7 @@ io.on('connection', manageConnection);
 function manageConnection(socket){
   socket.on('disconnect', function(){
   });
+  // send new question
   socket.on('send new question', function(questionObject){
     var parsedQuestion = JSON.parse(questionObject);
     redisFunctions.addQuestion(parsedQuestion, emitQlist);
@@ -22,6 +23,18 @@ function manageConnection(socket){
       io.emit('recieve updated questions', stringData);
     }
   });
+  // new comment time
+  socket.on('send new comment', function(commentObject){
+    var parsedComment = JSON.parse(commentObject);
+    redisFunctions.addComment(parsedComment, emitClist);
+
+    function emitClist(data){
+      var stringData = JSON.stringify(data);
+      io.emit('recieve updated comments', stringData);
+    }
+  });
+
+ // get question id and send back question
     socket.on('send question id', function(qIdInUrl){
       console.log('im qid', qIdInUrl);
       redisFunctions.getFullQuestion(qIdInUrl, qPageEmit);
@@ -32,6 +45,8 @@ function manageConnection(socket){
         io.emit('recieve question from db', stringData);
       }
   });
+
+  //
 
 
 }
