@@ -3,20 +3,26 @@ var client = require('redis').createClient(process.env.REDIS_URL);
 var redisKato = {
 
     addQuestion: function(question, myEmit) {
+        var access = question.cookie.split('&')[0];
+        var username = question.cookie.split('&')[1];
 
-        client.incr('idCounter', function(err, reply) {
-            var thisId = reply;
-            client.zadd("qScoreboard", 0, thisId);
-            client.lpush(["question", thisId], function(err, reply) {
+        redisKato.checkUser(access, username, function(){
+          client.incr('idCounter', function(err, reply) {
+              var thisId = reply;
+              client.zadd("qScoreboard", 0, thisId);
+              client.lpush(["question", thisId], function(err, reply) {
 
-            });
+              });
 
-            question.myId = thisId;
+              question.myId = thisId;
 
-            client.hmset(thisId, question, function() {
-                redisKato.getLatestQuestions(myEmit);
-            });
+              client.hmset(thisId, question, function() {
+                  redisKato.getLatestQuestions(myEmit);
+              });
+          });
         });
+
+
     },
     getFullQuestion: function(id, callback){
             var multi = client.multi();
@@ -81,7 +87,26 @@ var redisKato = {
 
 
         });
-    }
+    },
+
+    checkUser: function(access, username, callback) {
+    client.get(username,function(err, reply){
+      if (err) {console.log('checkuserror');}
+      else {
+        if(access === reply){
+          callback();
+        }
+
+
+      }
+    });
+  },
+
+  addUser: function(access, username){
+    client.set(username, access);
+
+  }
+
 };
 
 

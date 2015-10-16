@@ -18,16 +18,16 @@ socket.on('recieve updated questions', function(recievedQuestions){
 });
 
 function createQuestionHTML(object) {
-  titlesContainer.innerHTML += "<a class = \"questionFP\" href=\"/question/"+ object.myId + "\"<span>" + object.date + "Im a question id" + object.myId + "</span><p>" + object.title + "</p></a>";
+  titlesContainer.innerHTML += "<a class = \"questionFP\" href=\"/question/"+ object.myId + "\"<span>Date:" + object.date + "\nID:" + object.myId + "Username:" + object.username + "</span><br><p>" + object.title + "</p></a>";
 }
 
 function collectQuestionInfo() {
     var thisQuesTitle = quesTitleInput.value;
     var thisQuesContent = quesContentInput.value;
     var quesDate = new Date();
-    var cookie = document.cookie;
+    var cookie = document.cookie.split('access=')[1].split(';')[0];
     console.log('COOOKK',cookie);
-    var username = 'placeholder name';
+    var username = document.cookie.split('access=')[1].split(';')[0].split('&')[1];
 
     var questionObject = {
         cookie: cookie,
