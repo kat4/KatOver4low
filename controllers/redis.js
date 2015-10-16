@@ -55,26 +55,30 @@ var redisKato = {
     },
 
 
-    addComment: function(comment, callback) {
+    addComment: function(comment, myEmit) {
         client.incr('idCounter', function(err, reply) {
             var thisId = reply;
             comment.cId = thisId;
+            comment['content'] = comment['content'].replace(/<.*>/g, '');
+
 
             client.zadd("quesCommentLink", comment.qId, thisId);
 
             client.lpush(["comment", thisId], function(err, reply) {
 
             });
+            console.log('comment about to get set', comment);
             client.hmset(thisId, comment, function() {
-                callback();
+                redisKato.getQuestionComments(comment.qId, myEmit);
+                console.log('comment just got set', comment);
             });
         });
     },
 
-    getQuestionComments: function(qid, callback) {
+    getQuestionComments: function(qid, myEmitcallback) {
         client.zrangebyscore("quesCommentLink", qid, qid, function(err, reply) {
 
-            redisKato.idsToObjects(reply, callback);
+            redisKato.idsToObjects(reply, myEmitcallback);
         });
     },
 
