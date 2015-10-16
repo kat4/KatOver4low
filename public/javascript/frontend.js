@@ -22,11 +22,15 @@ function createQuestionHTML(object) {
 }
 
 function collectQuestionInfo() {
+  var dateObj = new Date();
+  var month = dateObj.getUTCMonth() + 1; //months from 1-12
+  var day = dateObj.getUTCDate();
+  var year = dateObj.getUTCFullYear();
+
     var thisQuesTitle = quesTitleInput.value;
     var thisQuesContent = quesContentInput.value;
-    var quesDate = new Date();
+    var quesDate = year + "/" + month + "/" + day;
     var cookie = document.cookie;
-    console.log('COOOKK',cookie);
     var username = 'placeholder name';
 
     var questionObject = {

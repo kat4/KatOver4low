@@ -35,7 +35,6 @@ var redisKato = {
         client.lrange("question", 0, 10, function(err, reply){
             var questionsToGetArr = [];
             questionsToGetArr = reply;
-            console.log('log Qs2Get', questionsToGetArr);
             if (err) {
                 console.log(err);
             }
