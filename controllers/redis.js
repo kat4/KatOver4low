@@ -1,4 +1,6 @@
-var client = require('redis').createClient(process.env.REDIS_URL);
+var client = require('redis').createClient(process.env.REDIS_URL, {
+    no_ready_check: true
+  });
 
 var redisKato = {
 
@@ -39,7 +41,6 @@ var redisKato = {
         client.lrange("question", 0, 10, function(err, reply){
             var questionsToGetArr = [];
             questionsToGetArr = reply;
-            console.log('log Qs2Get', questionsToGetArr);
             if (err) {
                 console.log(err);
             }
